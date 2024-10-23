@@ -24,16 +24,15 @@ class Rectangle:
     def upper_right(self) -> Point2D:
         return self.corner(3)
 
-    # def contains(self, point: Point2D, tolerance: float = 0.0) -> bool: # Task B
-    def contains(self, point: Point2D) -> bool:
+    def contains(self, point: Point2D, tolerance: float = 0.0) -> bool:
         # Task A: remove duplication by defining a function
         #         that checks if a value is within an interval
         #         and reuse that here.
         upper_bound_x = self._lower_left.x + self._dx
         upper_bound_y = self._lower_left.y + self._dy
         return (
-            self.is_in_interval(self._lower_left.x, upper_bound_x, point.x)
-            and self.is_in_interval(self._lower_left.y, upper_bound_y, point.y)
+            self.is_in_interval(self._lower_left.x - tolerance, upper_bound_x + tolerance, point.x)
+            and self.is_in_interval(self._lower_left.y - tolerance, upper_bound_y + tolerance, point.y)
         )
 
     def _is_idx_on_upper_edge(self, i: int) -> bool:
@@ -74,7 +73,6 @@ def test_rectangle_contains_tolerance() -> None:
     assert not rectangle.contains(lower_right)
     assert not rectangle.contains(upper_right)
 
-    # Task B: make the tests below pass by adding optional tolerance argument to `contains`
     assert not rectangle.contains(lower_left, tolerance=eps/2.0)
     assert not rectangle.contains(upper_left, tolerance=eps/2.0)
     assert not rectangle.contains(lower_right, tolerance=eps/2.0)
